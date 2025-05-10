@@ -45,6 +45,18 @@
           "name": "NeoBook Publishing",
           "url": "https://neobookpub.com"
         }
+      },
+      {
+        "isbn": "978-3-16-148410-0",
+        "price": 9.99,
+        "publishing_date": "2023-05-01",
+        "title": "The Silent Path",
+        "url": "https://example.com/ebook/the-silent-path",
+        "publisher": {
+          "id": 1,
+          "name": "Fictional House",
+          "url": "https://fictionalhouse.com"
+        }
       }
     ]
   },
