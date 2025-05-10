@@ -1,0 +1,92 @@
+[
+  {
+    "firstname": "John",
+    "lastname": "Doe",
+    "books": [
+      {
+        "isbn": "978-3-16-148410-0",
+        "price": 9.99,
+        "publishing_date": "2023-05-01",
+        "title": "The Silent Path",
+        "url": "https://example.com/ebook/the-silent-path"
+      },
+      {
+        "isbn": "978-3-16-148410-1",
+        "price": 14.99,
+        "publishing_date": "2022-10-15",
+        "title": "Winds of Change",
+        "category": "Fiction",
+        "length": "8h 45m"
+      }
+    ]
+  },
+  {
+    "firstname": "Jane",
+    "lastname": "Smith",
+    "books": [
+      {
+        "isbn": "978-3-16-148410-2",
+        "price": 12.99,
+        "publishing_date": "2024-01-20",
+        "title": "Echoes of Tomorrow",
+        "url": "https://example.com/ebook/echoes-of-tomorrow"
+      }
+    ]
+  },
+  {
+    "firstname": "Michael",
+    "lastname": "Johnson",
+    "books": [
+      {
+        "isbn": "978-3-16-148410-3",
+        "price": 19.99,
+        "publishing_date": "2021-11-10",
+        "title": "Journey Beyond",
+        "category": "Adventure",
+        "length": "10h 30m"
+      },
+      {
+        "isbn": "978-3-16-148410-4",
+        "price": 7.99,
+        "publishing_date": "2020-03-05",
+        "title": "The Lost World",
+        "url": "https://example.com/ebook/the-lost-world"
+      }
+    ]
+  },
+  {
+    "firstname": "Emily",
+    "lastname": "Clark",
+    "books": [
+      {
+        "isbn": "978-3-16-148410-5",
+        "price": 16.99,
+        "publishing_date": "2023-09-12",
+        "title": "Whispers in the Wind",
+        "category": "Mystery",
+        "length": "7h 15m"
+      }
+    ]
+  },
+  {
+    "firstname": "Robert",
+    "lastname": "Martinez",
+    "books": [
+      {
+        "isbn": "978-3-16-148410-6",
+        "price": 5.99,
+        "publishing_date": "2023-04-01",
+        "title": "Sunset Dreams",
+        "url": "https://example.com/ebook/sunset-dreams"
+      },
+      {
+        "isbn": "978-3-16-148410-7",
+        "price": 13.99,
+        "publishing_date": "2022-06-22",
+        "title": "The Forgotten Lands",
+        "category": "Fantasy",
+        "length": "9h 50m"
+      }
+    ]
+  }
+]
