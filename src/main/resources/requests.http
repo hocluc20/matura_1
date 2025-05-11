@@ -1,0 +1,31 @@
+POST localhost:8080/api/auth/signup
+Content-Type: application/json
+
+{
+  "username": "iwana@ursnik.at",
+  "password": "geheim123"
+}
+###
+
+POST localhost:8080/api/auth/signin
+Content-Type: application/json
+
+{
+  "username": "iwana@ursnik.at",
+  "password": "geheim123"
+}
+
+
+> {% client.global.set("jwt_token", response.body.token); %}
+###
+
+GET localhost:8080/api/books/all?type=all
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJpd2FuYUB1cnNuaWsuYXQiLCJleHAiOjE1NzIyNzc4OTM4MDk0MDAsImlhdCI6MTc0Njk3NTQzNywidHlwZSI6Im1mYSJ9.YskC2EDAGOiq9CMa8Jgdp5FZbGjEF4K8JkMwzDXPrGEDAGeu8oF_hjSvMrYEPmJx0LOlsd8eo1tY_coE85_sNA
+Content-Type: application/json
+###
+
+### Send POST request with json body
+GET http://localhost:8080/api/auth/otp-signin
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJpd2FuYUB1cnNuaWsuYXQiLCJleHAiOjE1NzIyNzgzOTgwODAzMDAsImlhdCI6MTc0Njk3NTk5NywidHlwZSI6Im1mYSJ9.6kX6nqWyb3tHk1zO27H0tHjIeomwLxgMrsiu-pO0neTpe0Wt3Jdn7qGfnxIBU8NK8lkMaIDU2_kx87Xc85dEiw
+OtpCode: 356669
