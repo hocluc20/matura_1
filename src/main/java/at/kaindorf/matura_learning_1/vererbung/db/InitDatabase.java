@@ -4,6 +4,7 @@ import at.kaindorf.matura_learning_1.vererbung.pojos.Author;
 import at.kaindorf.matura_learning_1.vererbung.pojos.Book;
 import at.kaindorf.matura_learning_1.vererbung.pojos.Publisher;
 import at.kaindorf.matura_learning_1.vererbung.repository.AuthorRepository;
+import at.kaindorf.matura_learning_1.vererbung.repository.BookRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class InitDatabase implements ApplicationRunner {
     private final AuthorRepository authorRepository;
+    private final BookRepository bookRepository;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -54,19 +56,24 @@ public class InitDatabase implements ApplicationRunner {
                     .flatMap(author -> author.getBooks().stream())
                     .map(Book::getPublisher).collect(Collectors.toSet());
 
-            for (Author author : authors){
-                Set<Book> newBooks = new HashSet<>();
-                for (Book book : author.getBooks()){
-                    newBooks.add(books.stream().filter(book1 -> book1.equals(book)).findAny().orElse(null));
+            Set<Book> finalBooks = books;
+            Set<Publisher> finalPublishers = publishers;
 
-                    book.setPublisher(publishers.stream().filter(publisher -> publisher.equals(book.getPublisher())).findAny().orElse(null));
+            authors.forEach(author -> {
+                HashSet<Book> books1 = new HashSet<>();
+                author.getBooks().forEach(book -> {
+                    Book bookUnique = finalBooks.stream().filter(book1 -> book1.equals(book)).findFirst().orElse(null);
+                    bookUnique.getAuthors().add(author);
+                    books1.add(bookUnique);
 
-                }
-                author.setBooks(newBooks);
-            }
+                    Publisher publisherUnique = finalPublishers.stream().filter(publisher1 -> publisher1.equals(bookUnique.getPublisher())).findFirst().orElse(null);
+                    bookUnique.setPublisher(publisherUnique);
+                    publisherUnique.getBooks().add(bookUnique);
+                });
+                author.setBooks(books1);
+            });
 
-            System.out.println(authors);
-            authorRepository.saveAll(authors);
+            bookRepository.saveAll(books);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

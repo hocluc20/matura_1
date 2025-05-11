@@ -31,3 +31,13 @@ OtpCode: 610517
 GET localhost:8080/api/data/books/all?type=all
 Authorization: Bearer {{token}}
 Content-Type: application/json
+
+###
+
+PATCH localhost:8080/api/data/books/e6a0454d-5837-4795-b4bc-55daf443c302
+Content-Type: application/json
+
+{
+  "title": "Lukiiiiiii geile sau",
+  "publishDate": "2029-05-07"
+}

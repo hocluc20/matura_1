@@ -1,11 +1,10 @@
 package at.kaindorf.matura_learning_1.vererbung.pojos;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -21,6 +20,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 @Entity
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Publisher {
     @Id
     @SequenceGenerator(name = "seq_gen", sequenceName = "seq_publisher", initialValue = 1, allocationSize = 2)
@@ -29,12 +29,15 @@ public class Publisher {
     private long id;
 
     @Column(length = 80)
+    @EqualsAndHashCode.Include
     private String name;
 
+    @EqualsAndHashCode.Include
     private String url;
 
     @OneToMany(mappedBy = "publisher")
     @JsonIgnore
+    @JsonManagedReference
     private Set<Book> books = new HashSet<>();
 
 }

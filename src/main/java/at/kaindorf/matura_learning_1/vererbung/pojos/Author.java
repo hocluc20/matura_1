@@ -23,6 +23,7 @@ import java.util.Set;
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
 @IdClass(AuthorPK.class)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Author {
 
     @Id
@@ -32,9 +33,11 @@ public class Author {
     private long id;
 
     @Column(length = 80)
+    @EqualsAndHashCode.Include
     private String firstname;
 
     @Column(length = 80)
+    @EqualsAndHashCode.Include
     private String lastname;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
@@ -43,11 +46,11 @@ public class Author {
             inverseJoinColumns = @JoinColumn(name = "book"),
             joinColumns = {@JoinColumn(name = "author", referencedColumnName = "id"), @JoinColumn(name = "name", referencedColumnName = "firstname")}
     )
-
     @JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
     @JsonSubTypes({
             @JsonSubTypes.Type(EBook.class),
             @JsonSubTypes.Type(AudioBook.class)
     })
+    @EqualsAndHashCode.Exclude
     private Set<Book> books = new HashSet<>();
 }

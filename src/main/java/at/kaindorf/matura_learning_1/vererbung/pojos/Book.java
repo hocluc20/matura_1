@@ -22,33 +22,34 @@ import java.util.Set;
 @NoArgsConstructor
 @SuperBuilder
 @EqualsAndHashCode(onlyExplicitlyIncluded = false)
-@JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
-@JsonSubTypes({
-        @JsonSubTypes.Type(EBook.class),
-        @JsonSubTypes.Type(AudioBook.class),
-})
+@ToString(onlyExplicitlyIncluded = true)
 public abstract class Book {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @JsonIgnore
     @EqualsAndHashCode.Exclude
+    @ToString.Include
     private String isbn;
 
     @Column(precision = 2)
+    @ToString.Include
     private Double price;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
     @JsonAlias("publishing_date")
+    @ToString.Include
     private LocalDate publishDate;
 
     private String title;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "publisher")
+    @EqualsAndHashCode.Exclude
+    @JsonBackReference
     private Publisher publisher;
 
-    @ManyToMany(mappedBy = "books")
+    @ManyToMany(mappedBy = "books", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @EqualsAndHashCode.Exclude
     @JsonIgnore
     private Set<Author> authors = new HashSet<>();
