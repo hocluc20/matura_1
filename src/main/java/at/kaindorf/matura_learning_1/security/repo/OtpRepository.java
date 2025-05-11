@@ -14,4 +14,6 @@ public interface OtpRepository extends JpaRepository<OtpToken, Long> {
     @Transactional
     void deleteAllByUser(User user);
 
+    @Transactional
+    void deleteAllByUser_Username(String userUsername);
 }
