@@ -1,0 +1,33 @@
+POST localhost:8080/api/auth/signup
+Content-Type: application/json
+
+{
+  "username": "iwana@ursnik.at",
+  "password": "geheim123"
+}
+
+###
+
+POST localhost:8080/api/auth/signin
+Content-Type: application/json
+
+{
+"username": "iwana@ursnik.at",
+"password": "geheim123"
+}
+
+> {% client.global.set("mfa_token", response.body.mfaToken);%}
+###
+
+GET http://localhost:8080/api/auth/otp-signin
+Content-Type: application/json
+Authorization: Bearer {{mfa_token}}
+OtpCode: 610517
+
+> {% client.global.set("token", response.body.token); %}
+
+###
+
+GET localhost:8080/api/data/books/all?type=all
+Authorization: Bearer {{token}}
+Content-Type: application/json
