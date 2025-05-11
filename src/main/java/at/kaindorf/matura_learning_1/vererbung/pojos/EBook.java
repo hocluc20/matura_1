@@ -10,14 +10,7 @@ import lombok.experimental.SuperBuilder;
  * @author david
  */
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Entity
-@SuperBuilder
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
-@Builder
+
 public class EBook extends Book{
     private String url;
 }

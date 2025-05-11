@@ -14,20 +14,9 @@ import java.util.List;
  * @author david
  */
 
-@Service
-@Slf4j
-@RequiredArgsConstructor
 public class DataAccessService {
 
-    private final BookRepository bookRepository;
-
     public List<Book> getAllBooks(String type){
-        if(type.equalsIgnoreCase("e")){
-            return bookRepository.findAllEBooks();
-        } else if (type.equalsIgnoreCase("audio")) {
-            return bookRepository.findAllAudioBooks();
-        } else {
-            return bookRepository.findAllByOrderByPriceDescIsbnAsc();
-        }
+        return null;
     }
 }

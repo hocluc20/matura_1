@@ -14,18 +14,6 @@ import org.springframework.stereotype.Service;
  * @author david
  */
 
-@Service
-@Slf4j
 public class UserService {
-    @Autowired
-    private UserRepository userRepository;
 
-    public UserDetailsService userDetailsService(){
-        return new UserDetailsService() {
-            @Override
-            public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-                return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("user: " + username + " not found"));
-            }
-        };
-    }
 }

@@ -9,9 +9,4 @@ import java.util.Optional;
 
 public interface OtpRepository extends JpaRepository<OtpToken, Long> {
 
-    Optional<OtpToken> findOtpTokenByUser_Username(String userUsername);
-
-    @Transactional
-    void deleteAllByUser(User user);
-
 }

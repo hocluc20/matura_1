@@ -15,29 +15,15 @@ import java.util.Set;
  * @author david
  */
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-@Entity
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+
 public class Publisher {
-    @Id
-    @SequenceGenerator(name = "seq_gen", sequenceName = "seq_publisher", initialValue = 1, allocationSize = 2)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_gen")
-    @JsonIgnore
+
     private long id;
 
-    @Column(length = 80)
-    @EqualsAndHashCode.Include
     private String name;
 
-    @EqualsAndHashCode.Include
     private String url;
 
-    @OneToMany(mappedBy = "publisher")
-    @JsonIgnore
-    @JsonManagedReference
     private Set<Book> books = new HashSet<>();
 
 }

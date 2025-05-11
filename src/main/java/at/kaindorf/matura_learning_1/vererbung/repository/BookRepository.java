@@ -9,13 +9,4 @@ import java.util.Optional;
 
 public interface BookRepository extends JpaRepository<Book, String> {
 
-    @Query("SELECT b FROM Book b WHERE TYPE(b) = EBook ORDER BY b.price DESC, b.isbn ASC")
-    List<Book> findAllEBooks();
-
-    @Query("SELECT b FROM Book b WHERE TYPE (b) = AudioBook ORDER BY b.price DESC, b.isbn ASC")
-    List<Book> findAllAudioBooks();
-
-    List<Book> findAllByOrderByPriceDescIsbnAsc();
-
-    Optional<Book> findBookByIsbn(String isbn);
 }

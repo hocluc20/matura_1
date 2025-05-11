@@ -28,63 +28,6 @@ import java.util.Optional;
  * @author david
  */
 
-@Component
-@Slf4j
-@RequiredArgsConstructor
-public class MfaAuthenticationFilter extends OncePerRequestFilter {
-    private final JwtService jwtService;
-    private final UserService userService;
-    private final UserRepository userRepository;
-    private final OtpRepository otpRepository;
+public class MfaAuthenticationFilter {
 
-    @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String authHeader = request.getHeader("Authorization");
-
-        if(authHeader == null || !authHeader.startsWith("Bearer ")){
-            log.info("authHeader missing (mfa)");
-            filterChain.doFilter(request, response);
-            return;
-        }
-
-        String token = authHeader.substring(7);
-        String username = jwtService.extractUsername(token);
-        UserDetails userDetails = userService.userDetailsService().loadUserByUsername(username);
-
-        if(!jwtService.isMfaTokenValid(token, userDetails)){
-            log.info("mfa token is invalid");
-            filterChain.doFilter(request, response);
-        }
-
-        Optional<User> optionalUser = userRepository.findByUsername(username);
-        User user = optionalUser.get();
-        Optional<OtpToken> optionalOtpToken = otpRepository.findOtpTokenByUser_Username(user.getUsername());
-        if(optionalOtpToken.isEmpty()){
-            log.info("user has no opt token issued");
-            filterChain.doFilter(request, response);
-            return;
-        }
-
-        OtpToken otpToken = optionalOtpToken.get();
-        String otpHeader = request.getHeader("OtpCode");
-        if(otpHeader == null){
-            log.info("OtpHeader is null");
-            filterChain.doFilter(request, response);
-            return;
-        }
-
-        Integer codeInHeader = Integer.parseInt(otpHeader);
-        if(!codeInHeader.equals(otpToken.getOtpCode())){
-            log.info("OTP Code invalid");
-            filterChain.doFilter(request, response);
-            return;
-        }
-
-        SecurityContext context = SecurityContextHolder.getContext();
-        Authentication authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-        context.setAuthentication(authentication);
-        SecurityContextHolder.setContext(context);
-        log.info("mfa authenticated");
-        filterChain.doFilter(request, response);
-    }
 }

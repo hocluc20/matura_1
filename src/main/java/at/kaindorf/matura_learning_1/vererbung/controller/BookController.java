@@ -14,16 +14,6 @@ import org.springframework.web.bind.annotation.*;
  * @author david
  */
 
-@RestController
-@RequestMapping("/api/data/books")
-@RequiredArgsConstructor
 public class BookController {
 
-    private final BookService bookService;
-
-    @PatchMapping("/{isbn}")
-    public ResponseEntity<Book> editBook(@PathVariable("isbn") String isbn, @RequestBody BookPatchDto bookPatchDto){
-        Book book = bookService.editBook(isbn, bookPatchDto);
-        return ResponseEntity.ok(book);
-    }
 }

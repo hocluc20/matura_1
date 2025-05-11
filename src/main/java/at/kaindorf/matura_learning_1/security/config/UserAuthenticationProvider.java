@@ -17,34 +17,5 @@ import org.springframework.stereotype.Service;
  * @author david
  */
 
-@Service
-public class UserAuthenticationProvider implements AuthenticationProvider {
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Override
-    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        // 1. userdaten holen
-        String username = authentication.getName();
-        String password = authentication.getCredentials().toString();
-
-        // 2. gibts den user?
-        UserDetails userDetails = userService.userDetailsService().loadUserByUsername(username);
-
-        // 3. credentials abfragen
-        if(!passwordEncoder.matches(password, userDetails.getPassword())){
-            throw new BadCredentialsException("Foisches passwort oida");
-        }
-
-        // 4. username passwort authentication object
-
-        return new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
-    }
-
-    @Override
-    public boolean supports(Class<?> authentication) {
-        return UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication);
-    }
+public class UserAuthenticationProvider {
 }

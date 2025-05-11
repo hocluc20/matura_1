@@ -12,18 +12,10 @@ import lombok.NoArgsConstructor;
  * @author david
  */
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Entity
-@Builder
 public class OtpToken {
-    @Id
-    @GeneratedValue
     private Long id;
 
     private Integer otpCode;
 
-    @OneToOne(cascade = CascadeType.MERGE)
     private User user;
 }

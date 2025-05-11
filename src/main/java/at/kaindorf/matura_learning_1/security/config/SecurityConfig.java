@@ -24,43 +24,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  * @author david
  */
 
-@Configuration
-@EnableWebSecurity
-@RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
-    private final JwtUnauthorizedEndpoint jwtUnauthorizedEndpoint;
-    private final MfaAuthenticationFilter mfaAuthenticationFilter;
-
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(requests ->
-                        requests.requestMatchers("/api/auth/otp-signin").authenticated()
-                                .requestMatchers("/api/data/books/**").permitAll()
-                                .requestMatchers("/api/auth/**").permitAll()
-                                .anyRequest().authenticated()
-                ).sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .exceptionHandling(exception -> exception.authenticationEntryPoint(jwtUnauthorizedEndpoint))
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterAfter(mfaAuthenticationFilter, jwtAuthenticationFilter.getClass());
-
-        return http.build();
-    }
-
-    @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http){
-        return new ProviderManager(authenticationProvider());
-    }
-
-    @Bean
-    AuthenticationProvider authenticationProvider(){
-        return new UserAuthenticationProvider();
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
 }

@@ -12,16 +12,8 @@ import lombok.experimental.SuperBuilder;
  * @author david
  */
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@SuperBuilder
-@ToString(callSuper = true)
-@Entity
-@EqualsAndHashCode(callSuper = true)
-@Table(name = "audiobook")
 public class AudioBook extends Book{
+
     private String length;
-    @Column(length = 80)
     private String category;
 }

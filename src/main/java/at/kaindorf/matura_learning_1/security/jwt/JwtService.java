@@ -18,12 +18,10 @@ import java.util.Date;
  * @author david
  */
 
-@Service
+
 public class JwtService {
-    @Value("${token.secret}")
     private String jwtSecret;
 
-    @Value("${token.duration}")
     private Duration duration;
 
     private SecretKey getSigningKey(){
@@ -32,39 +30,20 @@ public class JwtService {
     }
 
     public String generateToken(UserDetails userDetails){
-        return Jwts.builder()
-                .subject(userDetails.getUsername())
-                .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + duration.getSeconds() * 1000))
-                .claim("type", "access")
-                .signWith(getSigningKey())
-                .compact();
+        return null;
     }
 
     public String generateMfaToken(UserDetails userDetails){
-        return Jwts.builder()
-                .subject(userDetails.getUsername())
-                .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() * 1000 * 60 * 15))
-                .claim("type", "mfa")
-                .signWith(getSigningKey())
-                .compact();
+
+        return null;
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
-        Claims claims = extractClaims(token);
-        String username = userDetails.getUsername();
-        Date actualDate = new Date();
-        String type = extractType(token);
-        return username.equals(claims.getSubject()) && actualDate.before(claims.getExpiration()) && type.equals("access");
+        return false;
     }
 
     public boolean isMfaTokenValid(String token, UserDetails userDetails){
-        Claims claims = extractClaims(token);
-        String username = extractUsername(token);
-        Date actualDate = new Date();
-        String type = extractType(token);
-        return username.equals(claims.getSubject()) && actualDate.before(claims.getExpiration()) && type.equals("mfa");
+        return false;
     }
 
     private Claims extractClaims(String token) {
@@ -76,11 +55,11 @@ public class JwtService {
     }
 
     public String extractUsername(String token) {
-        return extractClaims(token).getSubject();
+        return null;
     }
 
     public String extractType(String token){
-        return  extractClaims(token).get("type", String.class);
+        return null;
     }
 
     /**

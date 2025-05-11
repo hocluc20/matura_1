@@ -15,18 +15,7 @@ import java.util.List;
  * @author david
  */
 
-@RestController
-@RequestMapping("/api/data")
-@RequiredArgsConstructor
-@Slf4j
+
 public class DataAccessController {
 
-    private final DataAccessService dataAccessService;
-
-    @GetMapping("/books/all")
-    public ResponseEntity<Iterable<Book>> getAllBooks(@RequestParam(value = "type", required = true, defaultValue = "all") String type){
-        List<Book> books = dataAccessService.getAllBooks(type);
-        //log.info(books.toString());
-        return ResponseEntity.ok(books);
-    }
 }

@@ -12,10 +12,6 @@ import java.io.Serializable;
  * @author david
  */
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class AuthorPK implements Serializable {
-    private long id;
-    private String firstname;
+public class AuthorPK {
+
 }
