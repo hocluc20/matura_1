@@ -12,10 +12,18 @@ import lombok.NoArgsConstructor;
  * @author david
  */
 
+@Entity
+@Data
+@AllArgsConstructor
+@Builder
+@NoArgsConstructor
 public class OtpToken {
+    @Id
+    @GeneratedValue
     private Long id;
 
     private Integer otpCode;
 
+    @ManyToOne
     private User user;
 }

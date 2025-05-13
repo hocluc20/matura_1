@@ -1,6 +1,8 @@
 package at.kaindorf.matura_learning_1.security.config;
 
 import at.kaindorf.matura_learning_1.security.services.UserService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -17,5 +19,32 @@ import org.springframework.stereotype.Service;
  * @author david
  */
 
-public class UserAuthenticationProvider {
+@Service
+@Slf4j
+public class UserAuthenticationProvider implements AuthenticationProvider{
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private UserService userService;
+
+    @Override
+    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+
+        // 1 daten holen
+        String username = authentication.getName();
+        String password = authentication.getCredentials().toString();
+
+        // validieren
+        UserDetails userDetails = userService.userDetailsService().loadUserByUsername(username);
+        if(!passwordEncoder.matches(password, userDetails.getPassword())){
+            throw new BadCredentialsException("Wrong password!");
+        }
+
+        return new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
+    }
+
+    @Override
+    public boolean supports(Class<?> authentication) {
+        return UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication);
+    }
 }

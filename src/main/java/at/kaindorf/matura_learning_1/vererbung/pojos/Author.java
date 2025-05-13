@@ -16,13 +16,35 @@ import java.util.Set;
  * @author david
  */
 
+@Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@IdClass(AuthorPK.class)
 public class Author {
 
-    private long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @JsonIgnore
+    private Long id;
 
+    @Id
     private String firstname;
 
     private String lastname;
 
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "book_author",
+            joinColumns = {@JoinColumn(name = "id", referencedColumnName = "id"),
+            @JoinColumn(name = "name", referencedColumnName = "lastname")},
+            inverseJoinColumns = @JoinColumn(name = "isbn")
+    )
+    @JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
+    @JsonSubTypes({
+            @JsonSubTypes.Type(EBook.class),
+            @JsonSubTypes.Type(AudioBook.class)
+    })
     private Set<Book> books = new HashSet<>();
 }

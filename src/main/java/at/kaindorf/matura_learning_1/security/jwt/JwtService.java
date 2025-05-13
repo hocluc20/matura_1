@@ -18,10 +18,12 @@ import java.util.Date;
  * @author david
  */
 
-
+@Service
 public class JwtService {
+    @Value("${token.secret}")
     private String jwtSecret;
 
+    @Value("${token.duration}")
     private Duration duration;
 
     private SecretKey getSigningKey(){
@@ -30,20 +32,37 @@ public class JwtService {
     }
 
     public String generateToken(UserDetails userDetails){
-        return null;
+        return Jwts.builder()
+                .subject(userDetails.getUsername())
+                .issuedAt(new Date())
+                .expiration(new Date(System.currentTimeMillis() + duration.getSeconds()*1000))
+                .signWith(getSigningKey())
+                .claim("type", "access")
+                .compact();
     }
 
     public String generateMfaToken(UserDetails userDetails){
-
-        return null;
+        return Jwts.builder()
+                .subject(userDetails.getUsername())
+                .issuedAt(new Date())
+                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 15))
+                .signWith(getSigningKey())
+                .claim("type", "mfa")
+                .compact();
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
-        return false;
+        Claims claims = extractClaims(token);
+        Date actualDate = new Date();
+        String type = extractType(token);
+        return claims.getSubject().equals(userDetails.getUsername()) && claims.getExpiration().after(actualDate) && type.equals("access");
     }
 
     public boolean isMfaTokenValid(String token, UserDetails userDetails){
-        return false;
+        Claims claims = extractClaims(token);
+        Date actualDate = new Date();
+        String type = extractType(token);
+        return claims.getSubject().equals(userDetails.getUsername()) && claims.getExpiration().after(actualDate) && type.equals("mfa");
     }
 
     private Claims extractClaims(String token) {
@@ -55,11 +74,11 @@ public class JwtService {
     }
 
     public String extractUsername(String token) {
-        return null;
+        return extractClaims(token).getSubject();
     }
 
     public String extractType(String token){
-        return null;
+        return extractClaims(token).get("type", String.class);
     }
 
     /**

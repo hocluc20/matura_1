@@ -22,7 +22,7 @@ Content-Type: application/json
 GET http://localhost:8080/api/auth/otp-signin
 Content-Type: application/json
 Authorization: Bearer {{mfa_token}}
-OtpCode: 610517
+OtpCode: 780886
 
 > {% client.global.set("token", response.body.token); %}
 

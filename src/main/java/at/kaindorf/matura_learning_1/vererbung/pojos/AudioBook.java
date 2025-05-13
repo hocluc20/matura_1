@@ -12,8 +12,13 @@ import lombok.experimental.SuperBuilder;
  * @author david
  */
 
+@Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+@SuperBuilder
 public class AudioBook extends Book{
-
     private String length;
     private String category;
 }

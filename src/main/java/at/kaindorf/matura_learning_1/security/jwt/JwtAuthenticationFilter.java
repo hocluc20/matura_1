@@ -25,6 +25,39 @@ import java.io.IOException;
  * @author david
  */
 
-public class JwtAuthenticationFilter {
+@Component
+@Slf4j
+@RequiredArgsConstructor
+public class JwtAuthenticationFilter extends OncePerRequestFilter{
 
+    private final JwtService jwtService;
+    private final UserService userService;
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        String authHeader = request.getHeader("Authorization");
+
+        if(authHeader == null || !authHeader.startsWith("Bearer ")){
+            log.info("Raphi hot kan kopf");
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        String token = authHeader.substring(7);
+        UserDetails userDetails = userService.userDetailsService().loadUserByUsername(jwtService.extractUsername(token));
+
+        if(!jwtService.isTokenValid(token, userDetails)){
+            log.info("raphi nix authenticated");
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        SecurityContext context = SecurityContextHolder.getContext();
+        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+        context.setAuthentication(authentication);
+        SecurityContextHolder.setContext(context);
+
+        log.info("raphi hats gschafft");
+        filterChain.doFilter(request, response);
+    }
 }

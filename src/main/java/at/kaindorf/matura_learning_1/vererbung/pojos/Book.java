@@ -15,17 +15,38 @@ import java.util.Set;
  * @author david
  */
 
+@Entity
+@AllArgsConstructor
+@SuperBuilder
+@NoArgsConstructor
+@Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+//@JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class Book {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @JsonIgnore
     private String isbn;
 
+    @EqualsAndHashCode.Include
     private Double price;
 
+    @EqualsAndHashCode.Include
+    @JsonAlias("publishing_date")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate publishDate;
 
+    @EqualsAndHashCode.Include
     private String title;
 
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JsonBackReference
+    @JoinColumn(name = "publisher")
     private Publisher publisher;
 
+    @ToString.Exclude
+    @ManyToMany(mappedBy = "books", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<Author> authors = new HashSet<>();
 }
